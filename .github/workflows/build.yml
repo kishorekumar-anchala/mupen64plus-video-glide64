@@ -34,6 +34,7 @@ jobs:
         run: |
           git clone --depth 1 -b ci-test6 --single-branch https://github.com/Jj0YzL5nvJ/mupen64plus-core.git ../mupen64plus-core
           export BUILD_DEPS="libgl1-mesa-dev libsdl2-dev"
+          export HOTFIX_I386="libvulkan-dev libvulkan-dev:i386"
           ./../mupen64plus-core/.github/workflows/scripts/ci_install_ubuntu_deps.sh ${{ matrix.arch }} ${{ matrix.cc }}
       - name: Build and related stuff, backup binaries
         run: |
@@ -84,7 +85,7 @@ jobs:
             make
             mingw-w64-${{ matrix.cross }}-toolchain
             mingw-w64-${{ matrix.cross }}-ntldd
-            mingw-w64-${{ matrix.cross }}-SDL2
+            mingw-w64-${{ matrix.cross }}-SDL
       - name: Build and related stuff, backup binaries
         run: |
           echo "NOTE: Building in MSYS2 against SDL2 always fails..."

@@ -79,7 +79,7 @@ jobs:
             make
             mingw-w64-${{ matrix.cross }}-toolchain
             mingw-w64-${{ matrix.cross }}-ntldd
-            mingw-w64-${{ matrix.cross }}-SDL2
+            mingw-w64-${{ matrix.cross }}-SDL
       - name: Build and related stuff, backup binaries
         run: |
           echo "NOTE: Building in MSYS2 against SDL2 always fails..."
