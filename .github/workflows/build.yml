@@ -32,10 +32,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: Get build dependencies and arrange the environment
         run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y libglib2.0-dev:i386 libglib2.0-dev-bin:i386 libglib2.0-dev-bin-linux:i386
           git clone --depth 1 https://github.com/mupen64plus/mupen64plus-core.git ../mupen64plus-core
           export BUILD_DEPS="libgl1-mesa-dev libsdl1.2-dev libsdl2-dev"
           ./../mupen64plus-core/.github/workflows/scripts/ci_install_ubuntu_deps.sh ${{ matrix.arch }} ${{ matrix.cc }}
-      - name: Build and related stuff, backup binaries
+      - name: Build and backup binaries
         run: |
           export PATH="$(pwd)/../mupen64plus-core/.github/workflows/scripts:${PATH}"
           export OPTFLAGS="-O2 -flto -msse2"
@@ -64,7 +67,7 @@ jobs:
             cross: i686
             env: MINGW32
     name: Windows ${{ matrix.arch }} / MSYS2 ${{ matrix.env }} ${{ matrix.cc }}
-    runs-on: windows-2022
+    runs-on: windows-latest
     defaults:
       run:
         shell: msys2 {0}
@@ -82,7 +85,7 @@ jobs:
             mingw-w64-${{ matrix.cross }}-toolchain
             mingw-w64-${{ matrix.cross }}-ntldd
             mingw-w64-${{ matrix.cross }}-SDL
-      - name: Build and related stuff, backup binaries
+      - name: Build and backup binaries
         run: |
           echo "NOTE: Building in MSYS2 against SDL2 always fails..."
           echo ""
@@ -108,12 +111,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: binaries
-      - name: Get some tools
+      - name: Get necessary tools
         run: |
           git clone --depth 1 https://github.com/mupen64plus/mupen64plus-core.git ../mupen64plus-core
           sudo apt-get update
-          sudo apt-get -y install hashdeep
-      - name: Creating new artifacts and update nightly-build
+          sudo apt-get install -y hashdeep
+      - name: Creating new artifacts and updating nightly build
         run: |
           ./../mupen64plus-core/.github/workflows/scripts/ci_nightly_artifacts.sh
       - name: Nightly-build
