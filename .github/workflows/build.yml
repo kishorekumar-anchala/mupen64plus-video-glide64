@@ -34,7 +34,7 @@ jobs:
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y libglib2.0-dev:i386 python3-packaging libglib2.0-dev-bin:i386 libglib2.0-dev-bin-linux:i386 --no-install-recommends
+          sudo apt-get install -y libglib2.0-dev:i386 libglib2.0-dev-bin:i386 libglib2.0-dev-bin-linux:i386 --no-install-recommends
           git clone --depth 1 https://github.com/mupen64plus/mupen64plus-core.git ../mupen64plus-core
           export BUILD_DEPS="libgl1-mesa-dev libsdl1.2-dev libsdl2-dev"
           ./../mupen64plus-core/.github/workflows/scripts/ci_install_ubuntu_deps.sh ${{ matrix.arch }} ${{ matrix.cc }}
